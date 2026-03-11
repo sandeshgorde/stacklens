@@ -1,0 +1,10 @@
+2024-01-15 08:00:00.000 INFO  [main] c.e.Application : Starting Application v1.0.0
+2024-01-15 08:00:00.500 INFO  [main] c.e.Application : Loading configuration from application.yml
+2024-01-15 08:00:01.000 INFO  [main] c.e.Application : Connected to PostgreSQL at localhost:5432/mydb
+2024-01-15 08:00:01.200 INFO  [main] c.e.Application : Redis cache connected at localhost:6379
+2024-01-15 08:00:01.500 INFO  [main] c.e.Application : Server started and listening on port 8080
+2024-01-15 08:00:02.000 INFO  [exec-1] c.e.HealthController : GET /actuator/health - 200 OK
+2024-01-15 08:01:00.000 INFO  [exec-2] c.e.OrderController : GET /api/orders?page=0&size=20 - 200 OK (34ms)
+2024-01-15 08:01:01.000 INFO  [exec-3] c.e.UserController  : POST /api/users - 201 Created (12ms)
+2024-01-15 08:01:02.000 INFO  [exec-4] c.e.OrderController : POST /api/orders - 201 Created (55ms)
+2024-01-15 08:02:00.000 INFO  [scheduling-1] c.e.CleanupJob : Scheduled cleanup ran successfully, removed 42 stale records

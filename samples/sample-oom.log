@@ -1,0 +1,15 @@
+2024-01-15 14:00:00.000 INFO  [main] c.e.Application : Starting batch processing job
+2024-01-15 14:00:01.000 INFO  [batch-1] c.e.BatchProcessor : Loading records from database
+2024-01-15 14:00:05.000 INFO  [batch-1] c.e.BatchProcessor : Loaded 500000 records into memory
+2024-01-15 14:00:10.000 WARN  [GC] : Full GC happening more frequently than expected
+2024-01-15 14:00:15.000 ERROR [batch-1] c.e.BatchProcessor : Processing failed
+java.lang.OutOfMemoryError: Java heap space
+	at java.util.Arrays.copyOf(Arrays.java:3210)
+	at java.util.Arrays.copyOf(Arrays.java:3181)
+	at java.util.ArrayList.grow(ArrayList.java:265)
+	at java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:239)
+	at java.util.ArrayList.ensureCapacityInternal(ArrayList.java:231)
+	at java.util.ArrayList.add(ArrayList.java:462)
+	at com.example.BatchProcessor.loadAllRecords(BatchProcessor.java:87)
+	at com.example.BatchProcessor.run(BatchProcessor.java:45)
+2024-01-15 14:00:15.001 ERROR [main] c.e.Application : JVM terminated due to OOM

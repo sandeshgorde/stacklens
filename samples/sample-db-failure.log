@@ -1,0 +1,14 @@
+2024-01-15 09:00:00.000 INFO  [main] c.e.Application : Starting Application
+2024-01-15 09:00:01.000 INFO  [main] c.e.Application : Configuring HikariCP connection pool
+2024-01-15 09:00:02.500 WARN  [main] c.z.h.HikariPool : HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2024-01-15 09:00:02.501 ERROR [main] c.e.Application : Failed to initialize application context
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory'
+Caused by: org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+Caused by: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:213)
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:163)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:100)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+2024-01-15 09:00:02.600 ERROR [main] c.e.Application : Application failed to start

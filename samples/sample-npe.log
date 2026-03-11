@@ -1,0 +1,12 @@
+2024-01-15 10:30:00.123 INFO  [main] c.e.Application : Starting Application v1.0.0
+2024-01-15 10:30:00.456 INFO  [main] c.e.Application : Connected to database at localhost:5432
+2024-01-15 10:30:01.789 INFO  [main] c.e.Application : Server listening on port 8080
+2024-01-15 10:30:05.001 INFO  [http-nio-8080-exec-1] c.e.OrderController : POST /api/orders - received request
+2024-01-15 10:30:05.123 ERROR [http-nio-8080-exec-1] c.e.OrderController : Failed to process order
+java.lang.NullPointerException: Cannot invoke "com.example.User.getEmail()" because "user" is null
+	at com.example.OrderService.createOrder(OrderService.java:42)
+	at com.example.OrderController.createOrder(OrderController.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+2024-01-15 10:30:05.200 INFO  [http-nio-8080-exec-2] c.e.HealthController : GET /actuator/health - 200 OK

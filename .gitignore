@@ -13,6 +13,8 @@ buildNumber.properties
 # ── Java ─────────────────────────────────────────────────────────────────────
 *.class
 *.log
+# Keep sample log files even though *.log is ignored
+!samples/*.log
 *.jar
 *.war
 *.ear

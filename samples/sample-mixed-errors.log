@@ -1,0 +1,25 @@
+2024-01-15 12:00:00.000 INFO  [main] c.e.Application : Starting Application
+2024-01-15 12:00:01.000 INFO  [main] c.e.Application : Application started on port 8080
+
+# ── First batch of requests (all healthy) ────────────────────────────────────
+2024-01-15 12:01:00.000 INFO  [exec-1] c.e.OrderController : GET /api/orders - 200 OK (12ms)
+2024-01-15 12:01:00.500 INFO  [exec-2] c.e.UserController  : GET /api/users/42 - 200 OK (8ms)
+
+# ── Auth failure ─────────────────────────────────────────────────────────────
+2024-01-15 12:02:00.000 WARN  [exec-3] c.e.SecurityFilter  : 401 Unauthorized: invalid or expired token for /api/admin/config
+2024-01-15 12:02:00.001 WARN  [exec-3] c.e.SecurityFilter  : Bad credentials - authentication failed for user: admin@example.com
+
+# ── Database timeout ─────────────────────────────────────────────────────────
+2024-01-15 12:03:00.000 ERROR [exec-5] c.e.OrderService    : Failed to fetch orders
+java.net.SocketTimeoutException: Read timed out after 5000ms waiting for response from database
+	at com.example.OrderRepository.findAll(OrderRepository.java:33)
+	at com.example.OrderService.getOrders(OrderService.java:55)
+
+# ── Thread pool exhaustion ────────────────────────────────────────────────────
+2024-01-15 12:04:00.000 ERROR [main] c.e.RequestDispatcher : Cannot handle request - thread pool is full
+java.util.concurrent.RejectedExecutionException: Task rejected from ThreadPoolExecutor[Running, pool size = 50, active threads = 50, queued tasks = 200, completed tasks = 10500]
+	at java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2063)
+
+# ── HTTP 500 ─────────────────────────────────────────────────────────────────
+2024-01-15 12:05:00.000 ERROR [exec-8] c.e.ErrorController : 500 Internal Server Error on POST /api/checkout
+2024-01-15 12:05:00.001 ERROR [exec-8] c.e.ErrorController : Resolved [org.springframework.web.util.NestedServletException: Handler dispatch failed]
