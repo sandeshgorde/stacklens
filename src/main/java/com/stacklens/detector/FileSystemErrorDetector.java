@@ -21,7 +21,8 @@ public class FileSystemErrorDetector implements IssueDetector {
         if (line.contains("FileNotFoundException") ||
             line.contains("AccessDeniedException") ||
             line.contains("No such file or directory") ||
-            line.contains("Permission denied")) {
+            (line.toLowerCase().contains("permission denied") &&
+             (line.contains("java.io") || line.contains("/") || line.contains("\\")))) {
             return Optional.of(new Issue(
                 getIssueType(),
                 getSeverity(),
