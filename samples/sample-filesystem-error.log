@@ -1,0 +1,20 @@
+2024-01-15 09:15:00.000 INFO  [main] c.e.Application : Starting Application v1.0.0
+2024-01-15 09:15:00.500 INFO  [main] c.e.Application : Loading configuration from /app/config/application.yml
+2024-01-15 09:15:01.200 INFO  [main] c.e.Application : Server listening on port 8080
+2024-01-15 09:15:05.000 INFO  [http-nio-8080-exec-1] c.e.ExportController : POST /api/export - received request
+2024-01-15 09:15:05.123 ERROR [http-nio-8080-exec-1] c.e.FileExportService : Failed to export report
+java.io.FileNotFoundException: /app/exports/report-2024.csv (No such file or directory)
+	at com.example.FileExportService.generateCsv(FileExportService.java:35)
+	at com.example.ExportController.exportReport(ExportController.java:22)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+2024-01-15 09:15:10.000 INFO  [http-nio-8080-exec-2] c.e.UploadController : POST /api/upload - received request
+2024-01-15 09:15:10.050 ERROR [http-nio-8080-exec-2] c.e.ImageUploadService : Cannot save uploaded file
+java.nio.file.AccessDeniedException: /app/uploads/images (Permission denied)
+	at com.example.ImageUploadService.saveImage(ImageUploadService.java:48)
+2024-01-15 09:15:15.000 INFO  [http-nio-8080-exec-3] c.e.ConfigController : GET /api/config - received request
+2024-01-15 09:15:15.020 ERROR [http-nio-8080-exec-3] c.e.ConfigService : Failed to read config file
+java.io.FileNotFoundException: /config/secrets.json (No such file or directory)
+2024-01-15 09:15:20.000 WARN  [http-nio-8080-exec-4] c.e.AssetLoader : Attempting to load /app/static/bundle.js
+java.io.FileNotFoundException: /app/static/bundle.js (Permission denied)
+2024-01-15 09:15:25.000 INFO  [http-nio-8080-exec-5] c.e.HealthController : GET /actuator/health - 200 OK
