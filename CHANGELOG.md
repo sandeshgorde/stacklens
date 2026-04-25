@@ -2,74 +2,163 @@
 
 All notable changes to StackLens will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.2.0] - 2026-04-25
 
----
+### Added
 
-## [Unreleased]
+- Feat: add TransactionErrorDetector and corresponding tests
 
-### Planned
-- AI-powered explanations using LLM APIs
-- Spring Boot structured log format support
-- Watch mode to tail log files in real time
-- Plugin system for custom detectors
-- IntelliJ / VS Code plugin
+### CI
 
----
+- Ci: auto-extract release notes from CHANGELOG
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+- Ci: automate CHANGELOG generation with git-cliff
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+- Ci: update git-cliff release action
+
+### Documentation
+
+- Docs: fix 1.0.0 release date to match actual initial commit
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
 ## [1.1.0] - 2026-04-17
 
 ### Added
 
-- **Severity levels** — every issue is now classified as `CRITICAL`, `ERROR`, or `WARNING`
-- **Occurrence counting** — repeated matches are counted and shown (e.g. `NullPointerException ×47`)
-- **Stack trace extraction** — frames following the matched line are collected and shown as context
-- **Location detection** — the first application-owned stack frame is extracted and shown as a `Location:` field (skips JDK, Spring, Hibernate internal frames)
-- **`--summary` / `-s` flag** — compact one-line-per-issue table with severity, count, and location; ideal for quick triage or pasting into Slack
-- **Stdin support** — pass `-` as the file argument to read from stdin (`kubectl logs pod | stacklens analyze -`)
-- **5 new detectors** (8 → 13 total):
-  - `SpringBeanDetector` — `NoSuchBeanDefinitionException`, `BeanCreationException`, circular dependencies (CRITICAL)
-  - `LazyInitializationDetector` — Hibernate `LazyInitializationException`, `could not initialize proxy` (ERROR)
-  - `ClassCastDetector` — `ClassCastException`, `cannot be cast to` (ERROR)
-  - `StackOverflowDetector` — `StackOverflowError` (CRITICAL)
-  - `ConcurrentModificationDetector` — `ConcurrentModificationException` (ERROR)
-- **`IssueClassifierTest`** — new test class covering counting, context, and location extraction
-- **`NewDetectorsTest`** — smoke tests for all five new detectors
+- Feat: v1.1.0 — severity levels, occurrence counts, stack location, 5 new detectors, stdin, summary mode, demo GIF
 
-### Changed
+- Add Severity enum (CRITICAL / ERROR / WARNING) to every detector
+- Enrich Issue model with occurrenceCount, stackContext, and location
+- Overhaul IssueClassifier: multi-line stack trace extraction, occurrence
+  counting, app-frame location detection (skips JDK/Spring/Hibernate internals)
+- Add 5 new detectors (8 → 13 total):
+    SpringBeanDetector, LazyInitializationDetector, ClassCastDetector,
+    StackOverflowDetector, ConcurrentModificationDetector
+- Add --summary / -s flag: compact one-line-per-issue table
+- Add stdin support: stacklens analyze - (pipe from kubectl/docker logs)
+- Update HumanReadableFormatter: severity badge, count, location, stack context
+- Update JsonFormatter: severity, occurrences, location, matchedLine, stackContext
+- Add IssueClassifierTest and NewDetectorsTest (73 tests total, all passing)
+- Add Playwright demo script: scripts/generate-demo.mjs → docs/demo.gif
+- Update README: animated demo GIF, before/after table, revised feature list
 
-- `Issue` model now carries `severity`, `occurrenceCount`, `stackContext`, and `location`
-- `IssueDetector` interface gains `getSeverity()` method
-- `IssueClassifier` is now multi-line aware — scans up to 15 stack frames after each match
-- Detectors now sorted by severity in the classifier (CRITICAL reported first)
-- JSON output now includes `severity`, `occurrences`, `location`, `matchedLine`, and `stackContext` fields
-- JSON output omits `null` fields (e.g. `location` when no app frame is found)
-- `AnalyzeCommand` now accepts a file path string (supports `-` for stdin) instead of `java.nio.file.Path`
-- Human-readable output shows severity badge, occurrence count, location, and stack context per issue
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
----
-
-## [1.0.0] - 2026-03-11
+## [1.0.0] - 2026-04-13
 
 ### Added
 
-- Initial release of StackLens
-- `analyze` CLI command supporting file input and inline text (`--text`)
-- Human-readable terminal output with ANSI color support
-- JSON output mode (`--output json`) for scripting and integrations
-- **8 built-in error detectors:**
-  - `NullPointerDetector` — detects `NullPointerException`
-  - `DatabaseConnectionDetector` — detects JDBC and HikariCP connection failures
-  - `TimeoutDetector` — detects `SocketTimeoutException` and request timeouts
-  - `ConnectionRefusedDetector` — detects `Connection refused` errors
-  - `OutOfMemoryDetector` — detects `OutOfMemoryError` (heap space, GC overhead)
-  - `AuthenticationErrorDetector` — detects 401/403, bad credentials, expired JWT
-  - `ThreadPoolExhaustionDetector` — detects `RejectedExecutionException`
-  - `Http500Detector` — detects HTTP 500 Internal Server Error
-- Deduplication of repeated errors (each issue type reported once)
-- Exit code signaling: `0` = clean, `1` = error, `2` = issues detected
-- JUnit 5 unit tests for all detectors, analyzer, and CLI
-- Sample log files for manual testing
-- GitHub Actions CI workflow (Java 17 and 21)
-- MIT License
+- Feat: add domain model classes (Issue, AnalysisResult)
+
+Issue holds the type, explanation, suggestions, and matched log line
+for a single detected problem. AnalysisResult wraps a list of Issues
+with the source descriptor (file path or inline text).
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+- Feat: add IssueDetector interface and 8 built-in detectors
+
+Adds the IssueDetector interface and implementations for:
+- NullPointerDetector
+- DatabaseConnectionDetector (HikariCP, JDBC, driver not found)
+- TimeoutDetector (SocketTimeoutException, gateway timeout)
+- ConnectionRefusedDetector
+- OutOfMemoryDetector (heap space, GC overhead, Metaspace)
+- AuthenticationErrorDetector (401, 403, bad credentials, JWT expired)
+- ThreadPoolExhaustionDetector (RejectedExecutionException)
+- Http500Detector
+
+Each detector matches one line at a time and returns an Optional<Issue>
+with a clear explanation and actionable suggestions.
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+- Feat: add IssueClassifier and LogAnalyzer
+
+IssueClassifier applies all registered detectors to each log line
+and deduplicates results by issue type — so the same error appearing
+100 times in a log is only reported once.
+
+LogAnalyzer is the entry point: reads files via NIO or splits inline
+text into lines and delegates to IssueClassifier.
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+- Feat: add output formatters and CLI commands
+
+Output layer:
+- HumanReadableFormatter: ANSI-colored terminal output with word-wrapped
+  explanations and numbered suggestions
+- JsonFormatter: pretty-printed JSON using Jackson records
+
+CLI layer (picocli):
+- Main: root command entry point, shows help when no subcommand given
+- AnalyzeCommand: 'analyze' subcommand supporting file input and --text
+  inline mode, --output json, --no-color; exit codes 0/1/2 for scripting
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+- Feat: add sample log files for manual testing
+
+Five realistic sample logs covering all detector types:
+- sample-npe.log: NullPointerException in OrderService
+- sample-db-failure.log: HikariCP/JDBC connection failure
+- sample-oom.log: OutOfMemoryError in batch processing job
+- sample-mixed-errors.log: auth failure, timeout, thread pool exhaustion, HTTP 500
+- sample-healthy.log: clean log (no errors)
+
+Also updated .gitignore to allow samples/*.log files.
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+
+### CI
+
+- Ci: add GitHub Actions workflow and issue/PR templates
+
+CI workflow (ci.yml):
+- Triggers on push to main/claude/** and PRs to main
+- Builds and tests on Java 17 and Java 21 (matrix)
+- Uploads test results and the fat JAR as build artifacts
+
+GitHub templates:
+- bug_report.md: structured bug report with reproduction steps
+- feature_request.md: feature/detector request with example log lines
+- pull_request_template.md: checklist-driven PR description
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+
+### Documentation
+
+- Docs: add README, CONTRIBUTING, CHANGELOG, LICENSE, and architecture docs
+
+README.md:
+- Project overview, why it exists, feature table
+- Installation from source and shell alias setup
+- Full usage examples with human-readable and JSON output samples
+- Architecture diagram, project structure, exit codes, roadmap
+
+CONTRIBUTING.md:
+- Step-by-step guide to adding a new error detector
+- Testing instructions, code style guidelines, PR process
+
+CHANGELOG.md: documents 1.0.0 release with all features listed
+
+LICENSE: MIT License
+
+docs/architecture.md: component diagram, data flow, extension points
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+
+### Testing
+
+- Test: add JUnit 5 unit tests for detectors, analyzer, and CLI
+
+Tests cover:
+- NullPointerDetectorTest: match, no-match, null input, trimming
+- DatabaseConnectionDetectorTest: JDBC, CommunicationsLinkFailure, PSQLException
+- AllDetectorsTest: smoke tests for all 8 detectors (positive + negative cases)
+- LogAnalyzerTest: file and text mode, deduplication, Windows line endings
+- AnalyzeCommandTest: CLI exit codes, JSON output, missing file, no args
+
+https://claude.ai/code/session_018keNUAUtdxDJb3GFGEBLo4
+
+
