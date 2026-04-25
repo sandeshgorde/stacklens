@@ -19,7 +19,7 @@ import picocli.CommandLine.Command;
     name = "stacklens",
     description = "Analyze Java and Spring Boot logs to explain errors and suggest fixes.",
     mixinStandardHelpOptions = true,
-    version = "StackLens 1.1.0",
+    version = "StackLens 1.2.0",
     subcommands = {
         AnalyzeCommand.class
     }

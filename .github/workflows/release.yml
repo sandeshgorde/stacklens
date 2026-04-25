@@ -29,9 +29,6 @@ jobs:
       - name: Build JAR
         run: mvn --batch-mode clean package -DskipTests
 
-      - name: Rename JAR
-        run: mv target/stacklens-*.jar target/stacklens.jar
-
       - name: Generate changelog with git-cliff
         id: cliff
         uses: orhun/git-cliff-action@v3

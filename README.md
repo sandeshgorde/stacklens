@@ -5,7 +5,7 @@
 [![CI](https://github.com/AbaSheger/stacklens/actions/workflows/ci.yml/badge.svg)](https://github.com/AbaSheger/stacklens/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java 17+](https://img.shields.io/badge/Java-17%2B-blue.svg)](https://adoptium.net/)
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/AbaSheger/stacklens/releases)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/AbaSheger/stacklens/releases)
 
 ![StackLens demo](docs/demo.gif)
 
