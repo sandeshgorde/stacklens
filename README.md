@@ -403,8 +403,19 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) to get
 
 The most impactful contributions are **new error detectors**. If you've seen a common Java or Spring Boot error that StackLens doesn't detect yet, please add it!
 
+
+## Contributors
+
+Thanks to everyone who has contributed to StackLens!
+
+<a href="https://github.com/AbaSheger/stacklens/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AbaSheger/stacklens" />
+</a>
+
 ---
 
 ## License
 
 StackLens is released under the [MIT License](LICENSE).
+
+
