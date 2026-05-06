@@ -6,14 +6,43 @@ import com.stacklens.model.Severity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Detects common Kafka producer and consumer errors in log lines.
+ *
+ * Matches patterns like ProducerFencedException, CommitFailedException,
+ * WakeupException, and common errors from org.apache.kafka.common.errors.
+ * These errors are frequent in microservice stacks with Kafka integration.
+ */
 public class KafkaErrorDetector implements IssueDetector {
 
+    /**
+     * Returns the issue type identifier for Kafka errors.
+     *
+     * @return the string "KafkaError"
+     */
     @Override
     public String getIssueType() { return "KafkaError"; }
 
+    /**
+     * Returns the severity level for Kafka errors.
+     *
+     * @return Severity.ERROR
+     */
     @Override
     public Severity getSeverity() { return Severity.ERROR; }
 
+    /**
+     * Analyzes a log line for Kafka producer/consumer error patterns.
+     *
+     * Checks for:
+     * - ProducerFencedException (producer fenced by broker)
+     * - CommitFailedException (consumer commit failed)
+     * - WakeupException (consumer/producer wakeup)
+     * - org.apache.kafka.common.errors (any Kafka common error)
+     *
+     * @param line a single line from the log or stack trace
+     * @return an Optional containing the detected Issue, or empty if no match
+     */
     @Override
     public Optional<Issue> detect(String line) {
         if (line == null) return Optional.empty();
