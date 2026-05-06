@@ -58,6 +58,7 @@ public class IssueClassifier {
         detectors.add(new Http500Detector());
         detectors.add(new FileSystemErrorDetector());
         detectors.add(new TransactionErrorDetector());
+        detectors.add(new KafkaErrorDetector());
 
         // WARNING severity
         detectors.add(new TimeoutDetector());

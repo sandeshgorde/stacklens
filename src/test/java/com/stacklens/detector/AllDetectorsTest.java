@@ -247,4 +247,51 @@ class AllDetectorsTest {
         IssueDetector detector = new TransactionErrorDetector();
         assertFalse(detector.detect(CLEAN_LINE).isPresent());
     }
+
+    @Test
+    void kafkaErrorDetector_detectsProducerFencedException() {
+        IssueDetector detector = new KafkaErrorDetector();
+        String line = "org.apache.kafka.common.errors.ProducerFencedException: Producer is fenced";
+
+        Optional<Issue> result = detector.detect(line);
+
+        assertTrue(result.isPresent());
+        assertEquals("KafkaError", result.get().getType());
+    }
+
+    @Test
+    void kafkaErrorDetector_detectsCommitFailedException() {
+        IssueDetector detector = new KafkaErrorDetector();
+        String line = "org.apache.kafka.clients.consumer.CommitFailedException: Commit cannot be completed";
+
+        Optional<Issue> result = detector.detect(line);
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void kafkaErrorDetector_detectsWakeupException() {
+        IssueDetector detector = new KafkaErrorDetector();
+        String line = "org.apache.kafka.common.errors.WakeupException: Kafka consumer wakeup";
+
+        Optional<Issue> result = detector.detect(line);
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void kafkaErrorDetector_detectsKafkaCommonErrors() {
+        IssueDetector detector = new KafkaErrorDetector();
+        String line = "org.apache.kafka.common.errors.NetworkException: Connection to node failed";
+
+        Optional<Issue> result = detector.detect(line);
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void kafkaErrorDetector_doesNotMatchCleanLine() {
+        IssueDetector detector = new KafkaErrorDetector();
+        assertFalse(detector.detect(CLEAN_LINE).isPresent());
+    }
 }
